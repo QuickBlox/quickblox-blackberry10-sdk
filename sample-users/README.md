@@ -12,4 +12,4 @@ It shows how to:
 
 Original sample description & setup guide - [http://quickblox.com/developers/SimpleSample-users-bb10](http://quickblox.com/developers/SimpleSample-users-bb10)
 
-![All users](http://files.quickblox.com/qbusers_bb10_11.png) ![ow to use QuickBlox through social networks (Facebook, Twitter)](http://files.quickblox.com/qbusers_bb10_22.png)
+![User authorisation](http://files.quickblox.com/qbusers_bb10_11.png) ![All users](http://files.quickblox.com/qbusers_bb10_22.png)

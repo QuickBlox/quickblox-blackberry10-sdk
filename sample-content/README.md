@@ -12,5 +12,5 @@ It shows how to:
 
 Original sample description & setup guide - [http://quickblox.com/developers/SimpleSample-content-bb10](http://quickblox.com/developers/SimpleSample-content-bb10)
 
-![Users's gallery](http://files.quickblox.com/qbcontent_bb10_1.png) &nbsp;&nbsp;&nbsp;&nbsp; ![full screen](http://files.quickblox.com/qbcontent_bb10_2.png)
-![Users's gallery](http://files.quickblox.com/qbcontent_bb10_3.png) &nbsp;&nbsp;&nbsp;&nbsp; ![full screen](http://files.quickblox.com/qbcontent_bb10_4.png)
+![User authorisation](http://files.quickblox.com/qbcontent_bb10_1.png) &nbsp;&nbsp;&nbsp;&nbsp; (http://files.quickblox.com/qbcontent_bb10_2.png)
+(http://files.quickblox.com/qbcontent_bb10_3.png) &nbsp;&nbsp;&nbsp;&nbsp; (http://files.quickblox.com/qbcontent_bb10_4.png)
