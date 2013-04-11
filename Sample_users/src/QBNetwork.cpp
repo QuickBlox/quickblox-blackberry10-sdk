@@ -543,9 +543,9 @@ void QBNetwork::onRequestSessionWithLogin() {
 		}
 		reply->deleteLater();
 	}
-	successLoad = true;
+/*	successLoad = true;
 	emit loadingChanged();
-	emit completeLogin();
+	emit completeLogin();*/
 }
 
 void QBNetwork::onRequestLogin() {
@@ -611,6 +611,7 @@ void QBNetwork::onRequestUsers() {
 				if (!destFile.open(QIODevice::WriteOnly))
 					return;
 				destFile.write(response.toAscii());
+				destFile.close();
 
 				JsonDataAccess jda;
 				QVariant qtData = jda.loadFromBuffer(response);
@@ -636,8 +637,15 @@ void QBNetwork::onRequestUsers() {
 						}
 					}
 				}
+
+				successLoad = true;
+				emit loadingChanged();
+				emit completeLogin();
+
 			}
 		} else {
+			successLoad = true;
+			emit loadingChanged();
 			if (reply->error() < 100) {
 				showError("Please check your internet connection");
 				return;

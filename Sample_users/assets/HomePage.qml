@@ -12,7 +12,7 @@ import com.example.Sample_users.QBNetwork 1.0
 
 NavigationPane {
     id: navigationPane
-    backButtonsVisible: false
+    //backButtonsVisible: false
     Page {
         Container {
             minHeight: _app.displayHeight()
@@ -77,6 +77,7 @@ NavigationPane {
                                 verticalAlignment: VerticalAlignment.Center
                                 horizontalAlignment: HorizontalAlignment.Center
                                 preferredWidth: 500
+                                text: "default"
                             }
                         }
                     } // end container for login
@@ -106,6 +107,7 @@ NavigationPane {
                                 verticalAlignment: VerticalAlignment.Center
                                 horizontalAlignment: HorizontalAlignment.Center
                                 preferredWidth: 500
+                                text: "11111111"
                             }
                         }
                     } // end container for password

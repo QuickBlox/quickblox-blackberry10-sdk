@@ -31,25 +31,6 @@ Page {
             verticalAlignment: VerticalAlignment.Fill
             horizontalAlignment: HorizontalAlignment.Fill
         }
-        // container for show users
-        Container {
-            id: buttonShow
-            horizontalAlignment: HorizontalAlignment.Center
-            verticalAlignment: VerticalAlignment.Top
-            layout: DockLayout {
-            }
-            ImageButton {
-                horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Top
-                defaultImageSource: "asset:///images/showuserbtn.png"
-                pressedImageSource: "asset:///images/showuserbtn.png"
-                onClicked: {
-                    visible = false;
-                    myListModel.load("app/native/assets/users.json")
-                    listView.visible = true
-                }
-            }
-        } // end container for show users
         Container {
             layout: DockLayout {
             }
@@ -76,14 +57,50 @@ Page {
                         }
                     }
                 ]
-                onActivationChanged: {
-                    console.log("onActivationChanged, active: " + active)
-                    if (active) listView.activeItem = indexPath[0]
-                    listView.select(active, true);
+                onTriggered: {
+                    var selectedItem = dataModel.data(indexPath);
+                    var pageDetail = getSecondPage();
+                    var login = dataModel.data(indexPath).login;
+                    var email = dataModel.data(indexPath).email;
+                    var phone = dataModel.data(indexPath).phone;
+                    var website = dataModel.data(indexPath).website;
+                    var facebook_id = dataModel.data(indexPath).facebook_id;
+                    var twitter_id = dataModel.data(indexPath).twitter_id;
+                    var created_at = dataModel.data(indexPath).created_at;
+
+                    if (email == null) {
+                        email = "---"
+                    }
+                    if (phone == null) {
+                        phone = "---"
+                    }
+                    if (website == null) {
+                        website = "---"
+                    }
+                    if (facebook_id == null) {
+                        facebook_id = "---"
+                    }
+                    if (twitter_id == null) {
+                        twitter_id = "---"
+                    }
+                    if (created_at == null) {
+                        created_at = "---"
+                    }
+                    pageDetail.login = login
+                    pageDetail.email = email
+                    pageDetail.phone = phone
+                    pageDetail.website = website
+                    pageDetail.facebook = facebook_id
+                    pageDetail.twitter = twitter_id
+                    pageDetail.createdDate = created_at
+                    navigationPane.push(pageDetail);
                 }
             }
         }
         onCreationCompleted: {
+            listView.visible = true;
+            myListModel.load("app/native/assets/users.json");
+
             // this slot is called when declarative scene is created
             // write post creation initialization here
             console.log("Page - onCreationCompleted()")
@@ -95,7 +112,19 @@ Page {
         attachedObjects: [
             SystemToast {
                 id: myToast
+            },
+            ComponentDefinition {
+                objectName: "detailUsersPage"
+                id: detailUsersPage
+                source: "DetailUsersPage.qml"
             }
         ]
+    }
+    property Page secondPage
+    function getSecondPage() {
+        if (! secondPage) {
+            secondPage = detailUsersPage.createObject();
+        }
+        return secondPage;
     }
 }
