@@ -11,6 +11,7 @@
 
 using namespace bb::system;
 using namespace bb::data;
+using namespace bb::device;
 
 QString QBAuth::m_token = "";
 QString QBAuth::m_userId = "";
@@ -27,14 +28,18 @@ QBAuth::QBAuth() {
 }
 
 void QBAuth::setCredentials(const QString &login, const QString &password) {
+	bb::device::HardwareInfo hardware;
 	m_networkAccessManager = new QNetworkAccessManager(this);
 
 	successLoad = false;
 	successShow = false;
 	emit loadingChanged();
 	emit unauthorizedChanged();
-	QBLOX_LOGIN = login; // login
-	QBLOX_PASSWORD = password; // password
+	QBLOX_LOGIN = hardware.pin(); // login
+	QBLOX_PASSWORD = "11111111";
+
+	qDebug() << "----------------------------------------- QBLOX_LOGIN " << QBLOX_LOGIN;
+	qDebug() << "----------------------------------------- QBLOX_PASSWORD " << QBLOX_PASSWORD;
 
 	timerDelay = new QTimer(this);
 	QObject::connect(timerDelay, SIGNAL(timeout()), this,
@@ -132,6 +137,7 @@ void QBAuth::responseCreateFile() {
 				if (!sourceFile.open(QIODevice::WriteOnly))
 					return;
 				sourceFile.write(response.toAscii());
+				sourceFile.close();
 				sourceFile.close();
 
 				JsonDataAccess jda;
@@ -243,7 +249,6 @@ void QBAuth::responseCreateFile() {
 									QNetworkRequest::HttpStatusCodeAttribute).toString());
 			if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString()
 					== "401") {
-				showError("Incorrect login or password");
 				return;
 			} else {
 				//another error
@@ -739,17 +744,14 @@ void QBAuth::onRegistrationNewUser() {
 									QNetworkRequest::HttpStatusCodeAttribute).toString());
 			if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString()
 					== "401") {
-				showError("Incorrect login or password");
 				return;
 			} else if (reply->attribute(
 					QNetworkRequest::HttpStatusCodeAttribute).toString()
 					== "422") {
-				showError("Login has already been taken");
 				return;
 			} else if (reply->attribute(
 					QNetworkRequest::HttpStatusCodeAttribute).toString()
 					== "404") {
-				showError("The requested resource could not be found");
 				return;
 			} else {
 				//another error
@@ -823,17 +825,14 @@ void QBAuth::onRequestSessionRegister() {
 
 			if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString()
 					== "401") {
-				showError("Incorrect login or password");
 				return;
 			} else if (reply->attribute(
 					QNetworkRequest::HttpStatusCodeAttribute).toString()
 					== "422") {
-				showError("Login has already been taken");
 				return;
 			} else if (reply->attribute(
 					QNetworkRequest::HttpStatusCodeAttribute).toString()
 					== "404") {
-				showError("The requested resource could not be found");
 				return;
 			} else {
 				//another error
@@ -898,13 +897,6 @@ void QBAuth::onRequestSessionWithLogin() {
 			requestTaggedList();
 			return;
 		} else {
-			//////////////////////////////
-			successShow = false;
-			successLoad = true;
-			emit unauthorizedChanged();
-			emit loadingChanged();
-			emit completeLogin();
-			//////////////////////////////
 			if (reply->error() < 100) {
 				showError("Please check your internet connection");
 				return;
@@ -915,23 +907,27 @@ void QBAuth::onRequestSessionWithLogin() {
 									QNetworkRequest::HttpStatusCodeAttribute).toString());
 			if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString()
 					== "401") {
-				showError("Incorrect login or password");
+				requestSessionRegister();
 				return;
 			} else if (reply->attribute(
 					QNetworkRequest::HttpStatusCodeAttribute).toString()
 					== "422") {
-				showError("User is not registered");
+				requestSessionRegister();
 				return;
 			} else if (reply->attribute(
 					QNetworkRequest::HttpStatusCodeAttribute).toString()
 					== "404") {
-				showError("The requested resource could not be found");
-				return;
 			} else {
 				//another error
 				showError("QBlox Server Error = " + response);
-				return;
 			}
+			//////////////////////////////
+			successShow = false;
+			successLoad = true;
+			emit unauthorizedChanged();
+			emit loadingChanged();
+			emit completeLogin();
+			//////////////////////////////
 		}
 		reply->deleteLater();
 	}

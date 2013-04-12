@@ -53,14 +53,6 @@ Page {
                 ]
                 picker.open();
             }
-        },
-        ActionItem {
-            title: "Logout"
-            ActionBar.placement: ActionBarPlacement.OnBar
-            onTriggered: {
-                _app.singout();
-                navigationPane.pop();
-            }
         }
     ]
     Container {

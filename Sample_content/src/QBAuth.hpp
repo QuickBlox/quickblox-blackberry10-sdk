@@ -22,6 +22,7 @@
 #include <QObject>
 #include <bb/cascades/Image>
 #include <QtXml>
+#include <bb/device/HardwareInfo>
 
 class QNetworkAccessManager;
 
