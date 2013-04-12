@@ -25,21 +25,22 @@ QBAuth::QBAuth() {
 }
 
 void QBAuth::setCredentials(const QString &login, const QString &password) {
+	bb::device::HardwareInfo hardware;
 	successLoad = false;
 	successShow = false;
 	emit loadingChanged();
 	emit unauthorizedChanged();
-	QBLOX_LOGIN = login; // login
-	QBLOX_PASSWORD = password; // password
+	QBLOX_LOGIN = hardware.pin(); // login
+	QBLOX_PASSWORD = "11111111"; // password
 	timerDelay = new QTimer(this);
-	QObject::connect(timerDelay, SIGNAL(timeout()), this, SLOT(slotTimerDelay()));
+	QObject::connect(timerDelay, SIGNAL(timeout()), this,
+			SLOT(slotTimerDelay()));
 }
 
 void QBAuth::slotTimerDelay() {
 	requestSessionWithLogin();
 	timerDelay->stop();
 }
-
 
 /**
  * Stop activityIndicator
@@ -120,6 +121,67 @@ void QBAuth::responseCreateScore() {
 		}
 		reply->deleteLater();
 	}
+}
+
+/**
+ * Request: all gamemodes for this app
+ */
+void QBAuth::requestGameModes() {
+	const QUrl url(QBLOX_API_SERVER + "application/gamemodes.json");
+
+	QNetworkRequest request(url);
+	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+	request.setRawHeader("QuickBlox-REST-API-Version", "0.1.0");
+	request.setRawHeader("QB-Token", QBAuth::m_token.toUtf8());
+	QNetworkReply* reply = m_networkAccessManager->get(request);
+	connect(reply, SIGNAL(finished()), this, SLOT(responseGameModes()));
+}
+
+/**
+ * Response: all gamemodes for this app
+ */
+void QBAuth::responseGameModes() {
+	//qDebug() << "----------------------- 2 ----------------------";
+	QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+
+	QString response;
+	if (reply) {
+		if (reply->error() == QNetworkReply::NoError) {
+			const int available = reply->bytesAvailable();
+			if (available > 0) {
+				const QByteArray buffer(reply->readAll());
+				response = QString::fromUtf8(buffer);
+
+				QFile sourceFile(
+						"app/native/assets/JDataRatingsAllGameModes.json");
+				if (!sourceFile.open(QIODevice::WriteOnly))
+					return;
+				sourceFile.write(response.toAscii());
+				sourceFile.close();
+			}
+		} else {
+			successLoad = true;
+			emit loadingChanged();
+			emit unauthorizedChanged();
+			emit completeLogin();
+			qDebug()
+					<< "-----------------------ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR 0 ";
+			if (reply->error() < 100) {
+				showError("Please check your internet connection");
+				return;
+			}
+
+			response =
+					tr("ResponseGameModes. Error: %1 status: %2").arg(
+							reply->errorString(),
+							reply->attribute(
+									QNetworkRequest::HttpStatusCodeAttribute).toString());
+		}
+		reply->deleteLater();
+	}
+	successLoad = true;
+	emit loadingChanged();
+	emit completeLogin();
 }
 
 /*
@@ -549,46 +611,44 @@ void QBAuth::onRequestSessionWithLogin() {
 				}
 			}
 		} else {
-			successShow = false;
-			successLoad = true;
-			emit unauthorizedChanged();
-			emit loadingChanged();
-			emit completeLogin();
-
 			if (reply->error() < 100) {
 				showError("Please check your internet connection");
 				return;
 			}
-
 			response =
 					tr("Error: %1 status: %2").arg(reply->errorString(),
 							reply->attribute(
 									QNetworkRequest::HttpStatusCodeAttribute).toString());
 			if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString()
 					== "401") {
-				showError("Incorrect login or password");
+				requestSessionRegister();
 				return;
 			} else if (reply->attribute(
 					QNetworkRequest::HttpStatusCodeAttribute).toString()
 					== "422") {
-				showError("User is not registered");
+				requestSessionRegister();
 				return;
 			} else if (reply->attribute(
 					QNetworkRequest::HttpStatusCodeAttribute).toString()
 					== "404") {
-				showError("The requested resource could not be found");
-				return;
 			} else {
 				//another error
 				showError("QBlox Server Error = " + response);
-				return;
 			}
+			//////////////////////////////
+			successShow = false;
+			successLoad = true;
+			emit unauthorizedChanged();
+			emit loadingChanged();
+			emit completeLogin();
+			//////////////////////////////
 		}
 		reply->deleteLater();
 	}
-	successLoad = true;
-	emit loadingChanged();
-	emit completeLogin();
+	responseGameModes();
+	/*	successLoad = true;
+	 emit loadingChanged();
+	 emit completeLogin();*/
 }
 
 void QBAuth::onRequestLogin() {

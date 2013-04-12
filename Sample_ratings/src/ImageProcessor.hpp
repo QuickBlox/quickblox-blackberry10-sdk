@@ -36,6 +36,7 @@ public Q_SLOTS:
     /*
      * Starts the actual operation.
      */
+	Q_INVOKABLE
     void start();
 
 Q_SIGNALS:

@@ -20,6 +20,7 @@
 #include <QDateTime>
 #include <bb/system/SystemToast>
 #include <QObject>
+#include <bb/device/HardwareInfo>
 
 class QNetworkAccessManager;
 
@@ -41,6 +42,8 @@ public:
 	void removeSession();
 	Q_INVOKABLE
 	void requestCreateScore(int id, int value);
+	Q_INVOKABLE
+	void requestGameModes();
 
 	Q_INVOKABLE
 	bool loading() const;Q_INVOKABLE
@@ -65,6 +68,7 @@ private Q_SLOTS:
 	void onRequestLogin();
 	void onSingOut();
 	void responseCreateScore();
+	void responseGameModes();
 	void slotTimerDelay();
 
 private:

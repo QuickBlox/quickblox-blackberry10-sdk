@@ -85,7 +85,7 @@ private:
     bool showing() const;
 
     int getScore(int id);
-    int getId(QString title);
+    int getId(QString title, QString response);
     void requestCreateGameMode(QString title);
     void requestScoreAverage();
     void requestGameModes();

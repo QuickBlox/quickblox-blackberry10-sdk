@@ -36,8 +36,6 @@ RatingsProcessor::RatingsProcessor(const QString &imageUrl, QObject* parent) :
  * Destructor
  */
 RatingsProcessor::~RatingsProcessor() {
-	if (m_thread)
-		m_thread->wait();
 }
 
 /**
@@ -103,18 +101,6 @@ void RatingsProcessor::onReplyFinished() {
 
 				// Setup the image processing thread
 				ImageProcessor *imageProcessor = new ImageProcessor(data);
-				m_thread = new QThread(this);
-
-				// Move the image processor to the worker thread
-				imageProcessor->moveToThread(m_thread);
-
-				// Invoke ImageProcessor's start() slot as soon as the worker thread has started
-				connect(m_thread, SIGNAL(started()), imageProcessor,
-						SLOT(start()));
-
-				// Delete the worker thread automatically after it has finished
-				connect(m_thread, SIGNAL(finished()), m_thread,
-						SLOT(deleteLater()));
 
 				/*
 				 * Invoke our onProcessingFinished slot after the processing has finished.
@@ -126,11 +112,7 @@ void RatingsProcessor::onReplyFinished() {
 						SLOT(onImageProcessingFinished(QImage)),
 						Qt::QueuedConnection);
 
-				// Terminate the thread after the processing has finished
-				connect(imageProcessor, SIGNAL(finished(QImage)), m_thread,
-						SLOT(quit()));
-
-				m_thread->start();
+				imageProcessor->start();
 			}
 		} else {
 			if (reply->error() < 100) {
@@ -184,11 +166,11 @@ void RatingsProcessor::onImageProcessingFinished(const QImage &image) {
 /**
  *
  */
-int RatingsProcessor::getId(QString title) {
+int RatingsProcessor::getId(QString title, QString response) {
 	int id;
 	bool flagIn = false;
 	bb::data::JsonDataAccess jda;
-	QVariant vlist = jda.load("app/native/assets/JDataRatingsAllGameModes.json");
+	QVariant vlist =  jda.loadFromBuffer(response);
 
 	QVariantList list = vlist.toList();
 
@@ -244,14 +226,8 @@ void RatingsProcessor::responseGameModes() {
 				const QByteArray buffer(reply->readAll());
 				response = QString::fromUtf8(buffer);
 
-				QFile sourceFile(
-						"app/native/assets/JDataRatingsAllGameModes.json");
-				if (!sourceFile.open(QIODevice::WriteOnly))
-					return;
-				sourceFile.write(response.toAscii());
-				sourceFile.close();
+				m_idRat = getId(fileName, response.toAscii());
 
-				m_idRat = getId(fileName);
 				if (m_idRat == 0) {
 					requestCreateGameMode(fileName);
 				} else {
@@ -314,13 +290,6 @@ void RatingsProcessor::responseCreateGameMode() {
 				const QByteArray buffer(reply->readAll());
 				response = QString::fromUtf8(buffer);
 
-				QFile sourceFile(
-						"app/native/assets/JDataRatingsCreateGameMode.json");
-				if (!sourceFile.open(QIODevice::WriteOnly))
-					return;
-				sourceFile.write(response.toAscii());
-				sourceFile.close();
-
 				requestGameModes();
 			}
 		} else {
@@ -372,16 +341,15 @@ void RatingsProcessor::responseScoreAverage() {
 				const QByteArray buffer(reply->readAll());
 				response = QString::fromUtf8(buffer);
 
-				QString nameFile = "app/native/assets/JDataRatingsScoreAverage"
-						+ QString("").setNum(m_idRat) + ".json";
-				QFile sourceFile(nameFile);
-				if (!sourceFile.open(QIODevice::WriteOnly))
-					return;
-				sourceFile.write(response.toAscii());
-				sourceFile.close();
+				bb::data::JsonDataAccess jda;
+				QVariant vlist = jda.loadFromBuffer(response);
 
-				QString scoreString = response.mid(10, 1);
-				m_ratValue = scoreString.toInt();
+				QVariantMap list = vlist.toMap();
+
+				float temp = list["value"].toFloat();
+
+				m_ratValue = temp;
+
 			}
 		} else {
 			m_ratValue = 0;
@@ -400,6 +368,8 @@ void RatingsProcessor::responseScoreAverage() {
 		reply->deleteLater();
 	}
 
+	emit ratValueChanged();
+
 	emit imageChanged();
 
 	m_label.clear();
@@ -410,13 +380,13 @@ void RatingsProcessor::responseScoreAverage() {
 	m_loading = false;
 	emit loadingChanged();
 
-	emit ratValueChanged();
-
 	m_urlImage = m_imageUrl;
 	emit urlImageChanged();
 
 	m_showing = true;
 	emit showingChanged();
+
+	emit ratValueChanged();
 
 	return;
 }

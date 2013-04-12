@@ -16,11 +16,14 @@
 using namespace bb::cascades;
 using namespace bb::system;
 
+int Sample_ratings::index = 0;
+
 Sample_ratings::Sample_ratings(bb::cascades::Application *app) :
 		QObject(app), m_model(new QListDataModel<QObject*>()) {
 	// Register custom type to QML
 	qmlRegisterType<RatingsProcessor>();
-	qmlRegisterType<QBAuth>("com.example.Sample_ratings.QBAuth", 1, 0, "QBAuth");
+	qmlRegisterType<QBAuth>("com.example.Sample_ratings.QBAuth", 1, 0,
+			"QBAuth");
 
 	// create scene document from main.qml asset
 	// set parent to created document to ensure it exists for the whole application lifetime
@@ -66,10 +69,20 @@ void Sample_ratings::loadImages() {
 					"http://quickblox.com/developers/skins/quickblox/img/sdk/wp7_sdk.png",
 					this));
 
-	// Call the load() method for each ImageLoader instance inside the model
-	for (int row = 0; row < m_model->size(); ++row) {
-		qobject_cast<RatingsProcessor*>(m_model->value(row))->load();
+	qobject_cast<RatingsProcessor*>(m_model->value(index))->load();
+	index++;
+
+	timerDelay = new QTimer(this);
+	QObject::connect(timerDelay, SIGNAL(timeout()), this, SLOT(slotTimerDelay()));
+	timerDelay->start(2000);
+}
+
+void Sample_ratings::slotTimerDelay() {
+	if (index == m_model->size()-1) {
+		timerDelay->stop();
 	}
+	qobject_cast<RatingsProcessor*>(m_model->value(index))->load();
+	index++;
 }
 
 bb::cascades::DataModel* Sample_ratings::model() const {
@@ -102,7 +115,8 @@ void Sample_ratings::onReplyFinished() {
 	if (reply) {
 		if (reply->error() == QNetworkReply::NoError) {
 			qbauth->requestCreateScore(m_id.toInt(), m_value.toInt());
-			qobject_cast<RatingsProcessor*>(m_model->value(m_index.toInt()))->refresh(m_id);
+			qobject_cast<RatingsProcessor*>(m_model->value(m_index.toInt()))->refresh(
+					m_id);
 		} else {
 			if (reply->error() < 100) {
 				SystemToast *toast = new SystemToast(this);

@@ -11,16 +11,6 @@ import bb.system 1.0
 
 Page {
     id: theRatingsPage
-    actions: [
-        ActionItem {
-            title: "Logout"
-            ActionBar.placement: ActionBarPlacement.OnBar
-            onTriggered: {
-                _app.singout();
-                navigationPane.pop();
-            }
-        }
-    ]
     attachedObjects: [
         SetRatingDialog {
             objectName: "dialogSetRating"
@@ -41,7 +31,7 @@ Page {
         // The ListView that shows the progress of loading and result images
         ListView {
             id: listView
-            preferredWidth: 600
+            preferredWidth: 620
             horizontalAlignment: HorizontalAlignment.Center
             verticalAlignment: VerticalAlignment.Center
             objectName: "listView"
@@ -51,6 +41,7 @@ Page {
             listItemComponents: ListItemComponent {
                 type: ""
                 Container {
+                    preferredHeight: 620
                     horizontalAlignment: HorizontalAlignment.Center
                     verticalAlignment: VerticalAlignment.Center
                     layout: StackLayout {
@@ -66,9 +57,12 @@ Page {
                             image.opacity = 0.5;
                         }
                         onStopped: {
-                            image.opacity = 1;
                             imageRatings.imageSource = imageShow();
+                            image.opacity = 1;
                         }
+/*                        onRunningChanged: {
+                            imageRatings.imageSource = imageShow();
+                        }*/
                     }
                     // The ImageView that shows the loaded image after loading has finished without error
                     ImageView {
@@ -79,9 +73,12 @@ Page {
                         maxWidth: 500
                         maxHeight: 500
                         image: ListItemData.image
-/*                        onImageChanged: {
-                            imageRatings.imageSource = imageShow();
-                        }*/
+                        onOpacityChanged: {
+                            //imageRatings.imageSource = imageShow();
+                        }
+                        onImageChanged: {
+                            //imageRatings.imageSource = imageShow();
+                        }
                     }
                     ImageView {
                         id: imageRatings
@@ -98,6 +95,10 @@ Page {
                         multiline: true
                     }
                     function imageShow() {
+                        console.log("--QML---, id = " + ListItemData.idRat + " ------------, ratValue = " + ListItemData.ratValue);
+                        if (ListItemData.ratValue == null) {
+                           return "asset:///images/rating_5.png"; 
+                        }
                         if (ListItemData.ratValue < 1) {
                             return "asset:///images/rating_0.png";
                         } else if (ListItemData.ratValue < 2) {

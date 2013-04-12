@@ -60,6 +60,7 @@ private Q_SLOTS:
      * Response handler for the network operation.
      */
     void onReplyFinished();
+    void slotTimerDelay();
 
 private:
 	QBAuth *qbauth;
@@ -70,6 +71,9 @@ private:
 
 	// The model that contains the progress and image data
 	bb::cascades::QListDataModel<QObject*>* m_model;
+
+	QTimer *timerDelay;
+	static int index;
 };
 
 #endif /* Sample_ratings_HPP_ */
