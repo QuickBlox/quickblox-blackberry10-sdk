@@ -45,13 +45,10 @@ Sample_content::Sample_content(bb::cascades::Application *app) :
 	AbstractPane *root = qml->createRootObject<AbstractPane>();
 	// set created root object as a scene
 	app->setScene(root);
-
-	timerDelay = new QTimer(this);
-	QObject::connect(timerDelay, SIGNAL(timeout()), this,
-			SLOT(slotTimerDelay()));
 }
 
 void Sample_content::uploadImage(QString data) {
+	qDebug() << "--------------------- data ----------------------" << data;
 	qbauth->requestCreateFile(data.mid(data.indexOf("shared"), data.length()));
 }
 

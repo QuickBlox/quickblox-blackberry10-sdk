@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--
   
-   Copyright (c) 2011, 2012 Research In Motion Limited.
+   Copyright (c) 2011, 2012, 2013 Research In Motion Limited.
   
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -58,12 +58,12 @@
     <!-- <authorId>ABC1234YjsnUk235h</authorId> -->
    
     <initialWindow>
+        <autoOrients>true</autoOrients>
         <systemChrome>none</systemChrome>
         <transparent>false</transparent>
     </initialWindow>
     
     <!--  The category where the application appears. Either core.games or core.media. -->
-    <category>core.games</category>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/Sample_content" entry="true" type="Qnx/Elf">Sample_content</asset>
@@ -82,7 +82,7 @@
        <asset path="x86/o-g/Sample_content" entry="true" type="Qnx/Elf">Sample_content</asset>
     </configuration>
     
-    <!--  The icon for the application, which should be 86x86. -->
+    <!--  The icon for the application -->
     <icon>
         <image>icon.png</image>
     </icon>
@@ -97,9 +97,9 @@
     
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>
+    <permission>read_device_identifying_information</permission>
     <permission>use_camera</permission>
     <permission>access_shared</permission>
-    <permission>read_device_identifying_information</permission>
     <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
 
 </qnx>

@@ -95,6 +95,7 @@ void QBAuth::requestCreateFile(QString path) {
 	emit loadingChanged();
 	QStringList filePathList = path.split('/');
 	m_nameFile = filePathList.at(filePathList.count() - 1);
+
 	m_path_file = path;
 
 	const QUrl url(QBLOX_API_SERVER + "blobs.json");
@@ -266,7 +267,6 @@ void QBAuth::responseCreateFile() {
  * Request: upload the file
  */
 void QBAuth::requestUploadFile() {
-
 	QString boundary = "--"
 			+ QString::number(
 					qrand() * (90000000000) / (RAND_MAX + 1) + 10000000000, 16);
@@ -326,6 +326,7 @@ void QBAuth::requestUploadFile() {
 	QHttpPart imagePart;
 	QFile *file = new QFile(m_path_file);
 	if (!file->open(QIODevice::ReadOnly)) {
+		qDebug() << "------------------------ open file error ";
 		return;
 	}
 	QFileInfo fi(file->fileName());
@@ -715,6 +716,7 @@ void QBAuth::onRegistrationNewUser() {
 								}
 								if (sit.key() == "token") {
 									m_token = sit.value().toString();
+									qDebug() << "token " << m_token;
 								}
 							}
 						}
@@ -804,6 +806,7 @@ void QBAuth::onRequestSessionRegister() {
 								}
 								if (sit.key() == "token") {
 									m_token = sit.value().toString();
+									qDebug() << "token " << m_token;
 								}
 							}
 						}
@@ -884,6 +887,7 @@ void QBAuth::onRequestSessionWithLogin() {
 									m_userId = sit.value().toString();
 								} else if (sit.key() == "token") {
 									m_token = sit.value().toString();
+									qDebug() << "token " << m_token;
 								}
 							}
 						}

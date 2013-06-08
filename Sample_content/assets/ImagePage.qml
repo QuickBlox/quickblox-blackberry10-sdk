@@ -90,7 +90,7 @@ Page {
                     verticalAlignment: VerticalAlignment.Top
                     horizontalAlignment: HorizontalAlignment.Center
                     visible: false
-                    imageSource: "asset:///images/DSCF1055.jpg"
+                    //imageSource: "asset:///images/DSCF1055.jpg"
                     topMargin: 30
                     preferredWidth: 300
                     preferredHeight: 600
@@ -178,6 +178,7 @@ Page {
         }
     }
     function fileActions() {
+        console.log("----------------------- picker.selectedFile = " + "file://" + picker.selectedFile)
         selectedImage.imageSource = "file://" + picker.selectedFile
         selectedLabel.visible = true;
         selectedImage.visible = true;
