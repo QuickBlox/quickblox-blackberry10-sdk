@@ -10,6 +10,6 @@ It shows how to:
 <li> Share own location between other users </li>
 </ul>
 
-Original sample description & setup guide - [http://quickblox.com/developers/Sample-location_bb10](http://quickblox.com/developers/Sample-location_bb10/)
+Original sample description & setup guide - [http://quickblox.com/developers/SimpleSample-location-bb10](http://quickblox.com/developers/SimpleSample-location-bb10)
 
-![Location](http://files.quickblox.com/qblocation_bb10_1.PNG) &nbsp;&nbsp;&nbsp;&nbsp; ![Location](http://files.quickblox.com/qblocation_bb10_2.PNG)
+![Location](http://files.quickblox.com/Sample_location_bb10_1.png) &nbsp;&nbsp;&nbsp;&nbsp; ![Location](http://files.quickblox.com/Sample_location_bb10_2.png)

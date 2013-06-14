@@ -10,7 +10,7 @@ It shows how to:
 <li> Organize chat in room </li>
 </ul>
 
-Original sample description & setup guide - [http://quickblox.com/developers/Sample-chat_bb10](http://quickblox.com/developers/Sample-chat_bb10)
+Original sample description & setup guide - [http://quickblox.com/developers/SimpleSample-chat-bb10](http://quickblox.com/developers/SimpleSample-chat-bb10)
 
-![Chat bb10](http://files.quickblox.com/qbchat_bb10_1.PNG) &nbsp;&nbsp;&nbsp;&nbsp; ![Chat bb10](http://files.quickblox.com/qbchat_bb10_2.PNG)
-![Chat bb10](http://files.quickblox.com/qbchat_bb10_3.PNG)
+![Chat bb10](http://files.quickblox.com/Sample_chat_bb10_1.PNG) &nbsp;&nbsp;&nbsp;&nbsp; ![Chat bb10](http://files.quickblox.com/Sample_chat_bb10_2.PNG)
+![Chat bb10](http://files.quickblox.com/Sample_chat_bb10_3.PNG)

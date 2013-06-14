@@ -10,6 +10,6 @@ It shows how to:
 <li> Get average ratings </li>
 </ul>
 
-Original sample description & setup guide - [http://quickblox.com/developers/Sample-ratings-bb10](http://quickblox.com/developers/Sample-ratings-bb10)
+Original sample description & setup guide - [http://quickblox.com/developers/SimpleSample-ratings-bb10](http://quickblox.com/developers/SimpleSample-ratings-bb10)
 
 ![List Object](http://files.quickblox.com/Sample_ratings_bb10_1.png) &nbsp;&nbsp;&nbsp;&nbsp; ![Average ratings](http://files.quickblox.com/Sample_ratings_bb10_2.png)

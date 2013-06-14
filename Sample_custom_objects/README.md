@@ -10,7 +10,7 @@ It shows how to:
 <li> Get, Create, Update, Delete your data using a lot of filters </li>
 </ul>
 
-Original sample description & setup guide - [http://quickblox.com/developers/Sample-customObjects-bb10](http://quickblox.com/developers/Sample-customObjects-bb10)
+Original sample description & setup guide - [http://quickblox.com/developers/SimpleSample-cobjects-bb10](http://quickblox.com/developers/SimpleSample-cobjects-bb10)
 
-![Custom Objects](http://files.quickblox.com/qbco_bb10_1.PNG) &nbsp;&nbsp;&nbsp;&nbsp; ![Custom Objects](http://files.quickblox.com/qbco_bb10_2.PNG)
-![Custom Objects](http://files.quickblox.com/qbco_bb10_3.PNG)
+![Custom Objects](http://files.quickblox.com/Sample_cobjects_bb10_1.PNG) &nbsp;&nbsp;&nbsp;&nbsp; ![Custom Objects](http://files.quickblox.com/Sample_cobjects_bb10_2.PNG)
+![Custom Objects](http://files.quickblox.com/Sample_cobjects_bb10_3.PNG)

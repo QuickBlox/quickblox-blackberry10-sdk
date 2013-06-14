@@ -10,7 +10,7 @@ It shows how to:
 <li> Upload new image </li>
 </ul>
 
-Original sample description & setup guide - [http://quickblox.com/developers/Sample_content-bb10](http://quickblox.com/developers/Sample_content-bb10)
+Original sample description & setup guide - [http://quickblox.com/developers/SimpleSample-content-bb10](http://quickblox.com/developers/SimpleSample-content-bb10)
 
-![Content page](http://files.quickblox.com/Sample_content_bb10_1.png) &nbsp;&nbsp;&nbsp;&nbsp; ![Content page](http://files.quickblox.com/Sample_content_bb10_2.png)
-![Content page](http://files.quickblox.com/Sample_content_bb10_3.png)
+![Content page](http://files.quickblox.com/Sample_content_bb10_11.png) &nbsp;&nbsp;&nbsp;&nbsp; ![Content page](http://files.quickblox.com/Sample_content_bb10_22.png)
+![Content page](http://files.quickblox.com/Sample_content_bb10_33.png)
